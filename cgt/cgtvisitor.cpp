@@ -17,7 +17,7 @@ namespace scially {
                 continue;
             }
             for (size_t i = 0; i < vertex->size(); i++) {
-                osg::Vec3 vert = algorithm_((*vertex)[i]);
+                osg::Vec3d vert = algorithm_((*vertex)[i]);
                 vertex->at(i) = vert;
             }
             geom->dirtyBound();
@@ -26,7 +26,7 @@ namespace scially {
     }
 
     void geom_visitor::apply(osg::PagedLOD& lod) {
-        osg::Vec3 vert = algorithm_(lod.getCenter());
+        osg::Vec3d vert = algorithm_(lod.getCenter());
         lod.setCenter(vert);
         lod.setDatabasePath(base_path_);
         traverse(lod);

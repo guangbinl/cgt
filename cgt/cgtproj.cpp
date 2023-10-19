@@ -45,7 +45,7 @@ namespace scially {
         double z_;
     };
 
-    cgt_proj::cgt_proj(const scially::osg_modeldata& source_metadata, const scially::osg_modeldata &target_metadata)
+    cgt_proj::cgt_proj(const scially::osg_modeldata& source_metadata, scially::osg_modeldata &target_metadata, bool cal_dest_orign)
         : source_metadata_(source_metadata), target_metadata_(target_metadata) {
         if(target_metadata_.is_valid() && target_metadata_.srs() != source_metadata_.srs()) {
             std::string source_srs, target_srs;
@@ -76,6 +76,12 @@ namespace scially {
                                                                          local_to_world);
                 target_world_to_local_ = osg::Matrixd::inverse(local_to_world);
             }
+
+            if (cal_dest_orign) {
+                osg::Vec3d dest_orign =  pj_transorm(source_metadata.origin());
+                target_metadata.set_origin(dest_orign);
+                target_metadata_.set_origin(dest_orign);
+            }
         }
     }
 
@@ -84,20 +90,30 @@ namespace scially {
         OGRSpatialReference osr;
         OGRErr err = OGRERR_FAILURE;
         if(srs.find("EPSG:") != std::string::npos){
-            err = osr.importFromEPSG(std::atoi(srs.substr(5).c_str()));
+            std::string epsgValue = srs.substr(5);
+            std::vector<std::string> epsgList = split(epsgValue, "+");
+            if (epsgList.size() == 1) {
+                err = osr.importFromEPSG(std::atoi(srs.substr(5).c_str()));
+            }
+            else if(epsgList.size() == 2){
+                OGRSpatialReference h_osr, v_osr;
+                h_osr.importFromEPSG(std::atoi(epsgList.at(0).c_str()));
+                v_osr.importFromEPSG(std::atoi(epsgList.at(1).c_str()));
+                err = osr.SetCompoundCS(srs.c_str(), &h_osr, &v_osr);
+            }
         }else if(srs.find("+proj") != std::string::npos){
             err = osr.importFromProj4(srs.c_str());
         } else {
             err = osr.importFromWkt(srs.c_str());
-        }
-        if (err != OGRERR_NONE)
+        }       if (err != OGRERR_NONE)
             throw cgt_exception("could not recognize srs: " + srs);
         osr.SetAxisMappingStrategy(OAMS_TRADITIONAL_GIS_ORDER);
+ 
         return osr;
     }
 
     void cgt_proj::crs_to_proj(const std::string &source_crs,
-                               std::string &proj_crs, osg::Vec3 &topcenteric, bool &is_topcenteric) const noexcept {
+                               std::string &proj_crs, osg::Vec3d &topcenteric, bool &is_topcenteric) const noexcept {
         if (source_crs.find("ENU:") != std::string::npos) {
             proj_crs = "EPSG:4326";
             is_topcenteric = true;
@@ -115,9 +131,9 @@ namespace scially {
 
     }
 
-    osg::Vec3 cgt_proj::transfrom(osg::Vec3 vert) const {
+    osg::Vec3d cgt_proj::transfrom(osg::Vec3d vert) const {
        vert += source_metadata_.origin();
-       osg::Vec3 result = pj_transorm(vert);
+       osg::Vec3d result = pj_transorm(vert);
        return result - target_metadata_.origin();
     }
 
@@ -132,7 +148,7 @@ namespace scially {
         }
     }
 
-    osg::Vec3 cgt_proj::pj_transorm (osg::Vec3 vert, bool forward) const {
+    osg::Vec3d cgt_proj::pj_transorm (osg::Vec3d vert, bool forward) const {
         OGRPoint point(vert.x(), vert.y(), vert.z());
         if (source_srs_is_topcenteric_) {
             double lat_r, lon_r, h;
@@ -160,10 +176,10 @@ namespace scially {
             point = OGRPoint(vert.x(), vert.y(), vert.z());
 
         }
-        return osg::Vec3(point.getX(), point.getY(), point.getZ());
+        return osg::Vec3d(point.getX(), point.getY(), point.getZ());
     }
 
-    osg::Vec3 cgt_proj::pj_transorm (double x, double y, double z, bool forward) const {
-        return pj_transorm(osg::Vec3(x, y, z), forward);
+    osg::Vec3d cgt_proj::pj_transorm (double x, double y, double z, bool forward) const {
+        return pj_transorm(osg::Vec3d(x, y, z), forward);
     }
 }

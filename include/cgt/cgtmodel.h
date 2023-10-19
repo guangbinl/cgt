@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cgt/cgtexception.h>
-#include <osg/Vec3>
+#include <osg/Vec3d>
 
 #include <vector>
 #include <cstdint>
@@ -24,17 +24,17 @@ namespace scially {
         std::string srs() const noexcept { return srs_; }
 
         void set_srs(const std::string &srs) noexcept { srs_ = srs; }
-        osg::Vec3 origin() const noexcept { return origin_; }
-        void set_origin(osg::Vec3 origin) noexcept { origin_ = origin;}
+        osg::Vec3d origin() const noexcept { return origin_; }
+        void set_origin(osg::Vec3d origin) noexcept { origin_ = origin;}
 
         bool is_valid() const noexcept { return !srs_.empty(); }
 
     private:
-        osg::Vec3 parse_origin(const std::string& srs_origin) const noexcept;
+        osg::Vec3d parse_origin(const std::string& srs_origin) const noexcept;
 
         // GZ2000 => EPSG:0
         // ENU: lat, lnt, h => topocentric
         std::string srs_;
-        osg::Vec3 origin_;
+        osg::Vec3d origin_;
     };
 }

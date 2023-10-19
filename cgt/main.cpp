@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
             ->add_option("--target-srs", target_srs, "target srs")
             ->required(true);
     transform_app
-            ->add_option("--target-origin", target_srs_origin, "target srs origin(default: 0,0,0)")
+            ->add_option("--target-origin", target_srs_origin, "target srs origin(default: automatically calculated based on source_srs_orign)")
             ->required(false);
     export_app
             ->add_option("-s,--shapefile", shapefile, "export extent")
@@ -70,12 +70,14 @@ int main(int argc, char *argv[]) {
     }
 
     if(transform_app->parsed()) {
+        CLI::Option* t_option = transform_app->get_option("--target-origin");
         scially::osg_modeldata target_modeldata;
         target_modeldata.load(target_srs, target_srs_origin);
 
         scially::osg_transform transform(in_location, out_location);
         transform.set_source_metadata(source_modeldata);
         transform.set_target_metadata(target_modeldata);
+        transform.set_orign_flag(t_option->empty());
         try {
             transform.run(thread);
         } catch (scially::cgt_exception &e) {

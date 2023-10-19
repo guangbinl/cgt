@@ -4,3 +4,10 @@ cmake-build*
 binary
 CMakeSettings.json
 include/cgt/config.h
+x64
+build/x64
+build/cgt
+CMakeFiles
+.vs
+build/cmake_install.cmake
+CMakeCache.txt

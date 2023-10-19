@@ -10,7 +10,7 @@
 namespace scially {
     class CGTLIBRARY geom_visitor : public osg::NodeVisitor {
     public:
-        geom_visitor(const std::string base_path, const vec3_transform &algorithm)
+        geom_visitor(const std::string base_path, const vec3d_transform &algorithm)
                 : base_path_(base_path), algorithm_(algorithm) {
             setTraversalMode(TRAVERSE_ALL_CHILDREN);
         }
@@ -22,7 +22,7 @@ namespace scially {
         virtual void apply(osg::PagedLOD &lod) override;
 
     private:
-        vec3_transform algorithm_;
+        vec3d_transform algorithm_;
         std::string base_path_;
     };
 

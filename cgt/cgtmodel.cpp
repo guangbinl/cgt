@@ -60,6 +60,7 @@ namespace scially {
         tinyxml2::XMLDocument doc;
         doc.Parse("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         tinyxml2::XMLElement *root = doc.NewElement("ModelMetadata");
+        root->SetAttribute("version", 1);
         doc.InsertEndChild(root);
 
         tinyxml2::XMLElement *srs = doc.NewElement("SRS");
@@ -73,16 +74,24 @@ namespace scially {
         srs_origin->SetText(xyz_format.c_str());
 
         root->InsertEndChild(srs_origin);
+
+
+        tinyxml2::XMLElement* texture = doc.NewElement("Texture");
+        tinyxml2::XMLElement* colorSource = doc.NewElement("ColorSource");
+        colorSource->SetText("Visible");
+        texture->InsertEndChild(colorSource);
+        root->InsertEndChild(texture);
+
         doc.SaveFile(output.c_str());
     }
 
-    osg::Vec3 osg_modeldata::parse_origin(const std::string& srs_origin) const noexcept{
+    osg::Vec3d osg_modeldata::parse_origin(const std::string& srs_origin) const noexcept{
         std::vector<std::string> srs_split = split(srs_origin, ",");
         std::vector<double> xyz = {0 ,0, 0};
         std::transform(srs_split.begin(), srs_split.end(), xyz.begin(), [](const auto& str) {
             return std::atof(str.c_str());
             });
 
-        return osg::Vec3(xyz[0], xyz[1], xyz[2]);
+        return osg::Vec3d(xyz[0], xyz[1], xyz[2]);
     }
 }

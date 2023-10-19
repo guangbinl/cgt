@@ -29,11 +29,11 @@ namespace scially {
         std::string tile_outpath = (fs::path(dir) / node_name_ ).string() + ".osgb";
         osg::ref_ptr<osgDB::Options> options = new osgDB::Options;
         //options->setOptionString("Compressor=zlib");
-        options->setOptionString("WriteImageHint=IncludeFile");
+        options->setOptionString("WriteImageHint=IncludeFile Compressor=zlib");
         osgDB::writeNodeFile(*node_, U8TEXT(tile_outpath), options);
 	}
 
-	void node_operator::apply(const std::string &base_path, const vec3_transform& algorithm) {
+	void node_operator::apply(const std::string &base_path, const vec3d_transform& algorithm) {
         geom_visitor visitor(base_path, algorithm);
         node_->accept(visitor);
         node_->dirtyBound();
@@ -66,7 +66,7 @@ namespace scially {
 
         BS::thread_pool thread_pool(max_thread);
 
-        cgt_proj proj_(source_metadata_, target_metadata_);
+        cgt_proj proj_(source_metadata_, target_metadata_, calculate_orign);
 
         for (const auto &data_x_dir: fs::directory_iterator(source_dir_,
                                                             ~fs::directory_options::follow_directory_symlink

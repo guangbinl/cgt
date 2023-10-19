@@ -15,8 +15,8 @@ namespace scially {
 
         node_operator tile_processor;
         tile_processor.read(tile_path);
-        std::string base_path = (fs::path(target_dir_) / root_name).string();
-        tile_processor.apply(base_path, [&proj](osg::Vec3 vert) {
+        std::string base_path = (fs::path(target_dir_) / data_name / root_name).string();
+        tile_processor.apply(base_path, [&proj](osg::Vec3d vert) {
             return proj.transfrom(vert);
         });
 

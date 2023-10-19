@@ -18,7 +18,7 @@
 #include <functional>
 
 namespace scially {
-    using vec3_transform = std::function<osg::Vec3(osg::Vec3)>;
+    using vec3d_transform = std::function<osg::Vec3d(osg::Vec3d)>;
 
     class CGTLIBRARY node_operator {
     public:
@@ -26,7 +26,7 @@ namespace scially {
 
         void write(const std::string &dir);
 
-        void apply(const std::string &base_path, const vec3_transform &);
+        void apply(const std::string &base_path, const vec3d_transform &);
 
     private:
         osg::ref_ptr<osg::Node> node_;
@@ -39,7 +39,7 @@ namespace scially {
 
         osg_base(const std::string &source_dir, const std::string &target_dir) :
                 source_dir_(source_dir), target_dir_(target_dir) {
-
+            calculate_orign = false;
         }
 
         virtual ~osg_base() {}
@@ -51,6 +51,8 @@ namespace scially {
         void set_source_metadata(const osg_modeldata &modeldata) { source_metadata_ = modeldata; }
 
         void set_target_metadata(const osg_modeldata &modeldata) { target_metadata_ = modeldata; }
+
+        void set_orign_flag(const bool flag) { calculate_orign = flag; }
 
         void run(uint32_t max_thread = 0);
 
@@ -68,5 +70,6 @@ namespace scially {
         std::string target_dir_;
         osg_modeldata source_metadata_;
         osg_modeldata target_metadata_;
+        bool calculate_orign;
     };
 }

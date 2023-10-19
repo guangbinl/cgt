@@ -13,8 +13,7 @@
     "format_version": {
       "type": "string",
       "enum": [
-        "1.0",
-        "1.1"
+        "1.0", "1.1"
       ]
     },
     "name": {
@@ -187,7 +186,7 @@
             "bbox"
           ]
         },
-        "name": {
+        "name" : {
           "type": "string",
           "description": "Name of the extent (e.g. \"Finland - mainland south of 66°N\")"
         },

@@ -43,13 +43,13 @@
         </xs:sequence>
         <xs:attribute name="name_en" type="xs:string"/>
         <xs:attribute name="name_de" type="xs:string"/>
-        <xs:attribute name="num" type="xs:integer" use="optional"/>
+        <xs:attribute name="num" type="xs:integer"  use="optional"/>
     </xs:complexType>
     <xs:complexType name="FieldType">
         <xs:attribute name="name_en" type="xs:string"/>
         <xs:attribute name="name_de" type="xs:string"/>
         <xs:attribute name="type">
-            <xs:simpleType>
+          <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:enumeration value="num"/>
                     <xs:enumeration value="char"/>

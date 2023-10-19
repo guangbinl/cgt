@@ -25,7 +25,7 @@
             <IncludeGeometryXML>false</IncludeGeometryXML>
             <InstantiateGMLFeaturesOnly>true</InstantiateGMLFeaturesOnly>
         </GML>
-        <!-- 60 for PostgreSQL compatiblity. The maximum is 64 but reserve
+        <!-- 60 for PostgreSQL compatibility. The maximum is 64 but reserve
              some space so that the spatial index name can be formed -->
         <IdentifierMaxLength>60</IdentifierMaxLength>
         <!-- Whether layer and field names should be consider equal in a
@@ -92,33 +92,34 @@
             <ResolutionDepth>1</ResolutionDepth>
             <CacheResults>false</CacheResults>
         </DefaultResolution>
-        <!--
-                <URLSpecificResolution>
-                    <URLPrefix>http://inspire.ec.europa.eu/codelist</URLPrefix>
-                    <HTTPHeader>
-                        <Name>Accept</Name>
-                        <Value>application/x-iso19135+xml</Value>
-                    </HTTPHeader>
-                    <HTTPHeader>
-                        <Name>Accept-Language</Name>
-                        <Value>en</Value>
-                    </HTTPHeader>
-                    <AllowRemoteDownload>true</AllowRemoteDownload>
-                    <ResolutionMode>FieldsFromXPath</ResolutionMode>
-                    <ResolutionDepth>1</ResolutionDepth>
-                    <CacheResults>true</CacheResults>
-                    <Field>
-                        <Name>name</Name>
-                        <Type>string</Type>
-                        <XPath>RE_RegisterItem/name/gco:CharacterString</XPath>
-                    </Field>
-                    <Field>
-                        <Name>definition</Name>
-                        <Type>string</Type>
-                        <XPath>RE_RegisterItem/definition/gco:CharacterString</XPath>
-                    </Field>
-                </URLSpecificResolution>
-        -->
+<!--
+        <URLSpecificResolution>
+            <URLPrefix>http://inspire.ec.europa.eu/codelist</URLPrefix>
+            <HTTPHeader>
+                <Name>Accept</Name>
+                <Value>application/x-iso19135+xml</Value>
+            </HTTPHeader>
+            <HTTPHeader>
+                <Name>Accept-Language</Name>
+                <Value>en</Value>
+            </HTTPHeader>
+            <AllowRemoteDownload>true</AllowRemoteDownload>
+            <ResolutionMode>FieldsFromXPath</ResolutionMode>
+            <ResolutionDepth>1</ResolutionDepth>
+            <CacheResults>true</CacheResults>
+            <Field>
+                <Name>name</Name>
+                <Type>string</Type>
+                <XPath>RE_RegisterItem/name/gco:CharacterString</XPath>
+            </Field>
+            <Field>
+                <Name>definition</Name>
+                <Type>string</Type>
+                <XPath>RE_RegisterItem/definition/gco:CharacterString</XPath>
+            </Field>
+        </URLSpecificResolution>
+-->
+        <ResolveInternalXLinks>true</ResolveInternalXLinks>
     </XLinkResolution>
 
     <IgnoredXPaths>
