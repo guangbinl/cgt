@@ -105,7 +105,8 @@ namespace scially {
             err = osr.importFromProj4(srs.c_str());
         } else {
             err = osr.importFromWkt(srs.c_str());
-        }       if (err != OGRERR_NONE)
+        }      
+        if (err != OGRERR_NONE)
             throw cgt_exception("could not recognize srs: " + srs);
         osr.SetAxisMappingStrategy(OAMS_TRADITIONAL_GIS_ORDER);
  
