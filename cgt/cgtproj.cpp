@@ -47,7 +47,7 @@ namespace scially {
 
     cgt_proj::cgt_proj(const scially::osg_modeldata& source_metadata, scially::osg_modeldata &target_metadata, bool cal_dest_orign)
         : source_metadata_(source_metadata), target_metadata_(target_metadata) {
-        if(target_metadata_.is_valid() && target_metadata_.srs() != source_metadata_.srs()) {
+        if(target_metadata_.is_valid()) {
             std::string source_srs, target_srs;
             crs_to_proj(source_metadata_.srs(),
                         source_srs, source_topcenteric_, source_srs_is_topcenteric_);
@@ -76,9 +76,8 @@ namespace scially {
                                                                          local_to_world);
                 target_world_to_local_ = osg::Matrixd::inverse(local_to_world);
             }
-
             if (cal_dest_orign) {
-                osg::Vec3d dest_orign =  pj_transorm(source_metadata.origin());
+                osg::Vec3d dest_orign = pj_transorm(source_metadata.origin());
                 target_metadata.set_origin(dest_orign);
                 target_metadata_.set_origin(dest_orign);
             }

@@ -68,10 +68,13 @@ namespace scially {
         root->InsertFirstChild(srs);
 
         tinyxml2::XMLElement *srs_origin = doc.NewElement("SRSOrigin");
-        const std::string xyz_format = std::to_string(origin_.x())
+   /*     const std::string xyz_format = std::to_string(origin_.x())
                 + "," + std::to_string(origin_.y())
-                + "," + std::to_string(origin_.z());
-        srs_origin->SetText(xyz_format.c_str());
+                + "," + std::to_string(origin_.z());*/
+
+        char xyz_format[128] = { 0 };
+        sprintf_s(xyz_format, "%.7f,%.7f,%.7f", origin_.x(), origin_.y(), origin_.z());
+        srs_origin->SetText(xyz_format);
 
         root->InsertEndChild(srs_origin);
 

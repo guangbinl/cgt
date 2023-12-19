@@ -14,7 +14,7 @@ namespace scially {
     class CGTLIBRARY osg_export : public osg_base {
     public:
         osg_export(const std::string &source_dir, const std::string &target_dir)
-                : osg_base(source_dir, target_dir) {
+                : osg_base(source_dir, target_dir), outer_cut(true){
 
         }
 
@@ -30,6 +30,8 @@ namespace scially {
 
         virtual ~osg_export() {}
 
+        void set_outer_flag(const bool& flag);
+
     private:
         bool is_intersect(const osg::Node &node);
 
@@ -38,5 +40,6 @@ namespace scially {
         std::unique_ptr<cgt_proj> proj_;
         std::vector<std::string> tiles;
         bool is_copy_ = true;
+        bool outer_cut;
     };
 }

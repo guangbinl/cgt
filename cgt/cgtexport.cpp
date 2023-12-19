@@ -72,9 +72,19 @@ namespace scially {
 
     bool osg_export::root_process(cgt_proj &proj, const std::string &tile_path) {
         auto node = osgDB::readRefNodeFile(U8TEXT(tile_path));
-        if (node && is_intersect(*node)) {
-            tiles.push_back(get_data_name(tile_path) + "/" + get_root_name(tile_path));
-            return true;
+        if (node) {
+            if (outer_cut) {
+                if (is_intersect(*node)) {
+                    tiles.push_back(get_data_name(tile_path) + "/" + get_root_name(tile_path));
+                    return true;
+                }
+            }
+            else {
+                if (!is_intersect(*node)) {
+                    tiles.push_back(get_data_name(tile_path) + "/" + get_root_name(tile_path));
+                    return true;
+                }    
+            }
         }
         return false;
     }
@@ -104,5 +114,9 @@ namespace scially {
         }
 
         return true;
+    }
+
+    void osg_export::set_outer_flag(const bool& flag) {
+        outer_cut = flag;
     }
 }
